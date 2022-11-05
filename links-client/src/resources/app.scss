@@ -1,0 +1,25 @@
+$color-primary: #5293e3 !important;
+
+.pagination {
+    --bs-pagination-color:  #{$color-primary};
+}
+
+.primary-background{
+    background-color:  $color-primary ;
+}
+
+
+
+.primary-text{
+    color: #fff !important;
+}
+
+.active .page-link{
+    @extend .primary-background;
+}
+
+.table-icons{
+    color: #3283e6 !important;
+    font-size: 150%;
+    cursor: pointer;
+}

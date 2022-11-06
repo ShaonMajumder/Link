@@ -4,6 +4,7 @@ import apiClient,{login_url,csrf_token_url } from '../services/api';
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoggedIn, setLoggedOut} from '../reducers/linkSlice';
+import Swal from 'sweetalert2';
 
 const Login = (props) => {
     const dispatch = useDispatch();
@@ -41,6 +42,11 @@ const Login = (props) => {
                     console.error(error);
                 }
             });
+        }).catch(error => {
+            Swal.fire({
+                text:error.message,
+                icon:"error"
+            })
         });
     }
     if (toHome === true) {

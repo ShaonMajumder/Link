@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 import { Redirect, useHistory } from 'react-router-dom';
 import apiClient, { linksApi, book_create_url, useAddLinkMutation } from '../services/api';
 import store from "../store";
-
+import Select from 'react-select';
+// import makeAnimated from 'react-select/animated';
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000"
 
@@ -62,6 +63,12 @@ export default function CreateBook(props) {
     .catch((error) => console.error('rejected', error))
   }
 
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
+
   return (
     <div className="container">
       <div className="row justify-content-center">
@@ -98,6 +105,18 @@ export default function CreateBook(props) {
                             }}/>
                         </Form.Group>
                       </Col>  
+                  </Row>
+                  
+                  <Row className="my-3">
+                      <Col>
+                        <Form.Group controlId="Tag">
+                            <Form.Label>Tags</Form.Label>
+                            {/* <Form.Control as="textarea" rows={3} value={author} onChange={(event)=>{
+                              setAuthor(event.target.value)
+                            }}/> */}
+                            <Select options={options} isMulti />
+                        </Form.Group>
+                      </Col>
                   </Row>
                   <Row className="my-3">
                       <Col>

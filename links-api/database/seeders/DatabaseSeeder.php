@@ -13,17 +13,25 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run(){
-        User::insert([
-            'name' => 'Global Admin',
-            'email' => 'admin@admin.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('12345678'),        
-            'remember_token' => Str::random(10),
-        ]);   
-        User::factory(10)->create();
-        // $this->call([
-        //     LinkSeeder::class
-        // ]);
+    // public function run(){
+    //     User::insert([
+    //         'name' => 'Global Admin',
+    //         'email' => 'admin@admin.com',
+    //         'email_verified_at' => now(),
+    //         'password' => bcrypt('12345678'),        
+    //         'remember_token' => Str::random(10),
+    //     ]);   
+    //     User::factory(10)->create();
+    //     // $this->call([
+    //     //     LinkSeeder::class
+    //     // ]);
+    // }
+
+    public function run()
+    {
+        $account_seeder = new AccountSeeder();
+        $account_types = $account_seeder->run();
+        $user_seeder = new UserSeeder($account_types);
+        $user_seeder->run();
     }
 }

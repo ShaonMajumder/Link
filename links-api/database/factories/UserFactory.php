@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Account;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -18,8 +19,10 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => bcrypt('12345678'), //'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => '$2y$10$eQfXVn36OiujsHvfCCgHu.F08HvK7ep1SB5nW5BF0pqd3HaRGS03.', // password
             'remember_token' => Str::random(10),
+            'account_type' => Account::all()->random()->id,
+            'status' => true,
         ];
     }
 

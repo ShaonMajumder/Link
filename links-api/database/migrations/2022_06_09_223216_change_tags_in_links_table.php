@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class ChangeTagsInLinksTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if( Schema::hasColumn('links', 'tags')) {
+            Schema::table('links', function (Blueprint $table) {
+                $table->dropColumn('tags');
+            });
+        }
+        Schema::table('links', function (Blueprint $table) {
+            $table->json('tags')->nullable()->after('link');
+        });
+        
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('links', function (Blueprint $table) {
+            //
+        });
+    }
+}

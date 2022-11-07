@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Swal from 'sweetalert2';
 import { Redirect, useHistory } from 'react-router-dom';
-import apiClient, { linksApi, book_create_url, useAddLinkMutation } from '../services/api';
+import apiClient, { linksApi, book_create_url, useAddLinkMutation,useGetTagsQuery, link_get_tags_url } from '../services/api';
 import store from "../store";
 import Select from 'react-select';
 // import makeAnimated from 'react-select/animated';
@@ -13,11 +13,14 @@ import Select from 'react-select';
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000"
 
 export default function CreateBook(props) {
+  const [tags, setTags] = useState([])
+  
   const { refetch } = linksApi.endpoints.links.useQuerySubscription(props.page)
   const [addBook, { isLoading2 }] = useAddLinkMutation()
   // const page = props.page;
   // const setPage = props.setPage;
   const history = props.history()
+
 
   const [link, setLink] = useState("")
   const [author, setAuthor] = useState("")
@@ -63,6 +66,21 @@ export default function CreateBook(props) {
     .catch((error) => console.error('rejected', error))
   }
 
+  // const { data: tagItems, isLoading, isSuccess, isError }  = useGetTagsQuery()
+  // console.log('tagItems',tagItems)
+  // if(tagItems){
+  //   setTags(tagItems)
+  // }
+
+  apiClient.get(link_get_tags_url)
+        .then(response => {
+          // setTags(response.data.data)
+          setTags( response.data.data.map(({name,causer_id})=>{
+            console.log(name)
+            return { value: name, label: name }
+          }) );
+        })
+  
   const options = [
     { value: 'chocolate', label: 'Chocolate' },
     { value: 'strawberry', label: 'Strawberry' },
@@ -75,7 +93,7 @@ export default function CreateBook(props) {
         <div className="col-12 col-sm-12 col-md-6">
           <div className="card">
             <div className="card-body">
-              <h4 className="card-title">Create Book</h4>
+              <h4 className="card-title">Create Link</h4>
               <hr />
               <div className="form-wrapper">
                 {

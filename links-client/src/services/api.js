@@ -8,10 +8,11 @@ export const client_url = process.env.REACT_APP_CLIENT_URL || "http://localhost:
 export const login_url = process.env.REACT_APP_LOGIN_URL || "api/login"
 export const logout_url = process.env.REACT_APP_LOGOUT_URL || "api/logout"
 export const csrf_token_url = process.env.REACT_APP_CSRF_TOKEN_URL || "/sanctum/csrf-cookie"
-export const link_url = process.env.REACT_APP_BOOK_URL || "/api/links"
-export const get_link_url = process.env.REACT_APP_BOOK_GET_URL || "/api/links"
-export const link_create_url = process.env.REACT_APP_BOOK_CREATE_URL || "/api/links/add"
-export const link_delete_url = process.env.REACT_APP_BOOK_DELETE_URL || "/api/links/delete"
+export const link_url = process.env.REACT_APP_LINK_URL || "/api/links"
+export const get_link_url = process.env.REACT_APP_LINK_GET_URL || "/api/links"
+export const link_create_url = process.env.REACT_APP_LINK_CREATE_URL || "/api/links/add"
+export const link_delete_url = process.env.REACT_APP_LINK_DELETE_URL || "/api/links/delete"
+export const link_get_tags_url = process.env.REACT_APP_LINK_GET_TAGS_URL || "/api/links/tags"
 
 function providesList(resultsWithIds, tagType) {
     return resultsWithIds
@@ -67,6 +68,12 @@ export const linksApi = createApi({
             //     : [{ type: 'Link', id: 'PARTIAL-LIST' }],
 
 
+        }),
+        getTags: builder.query({
+            query: () => {
+                return `/links/tags`;
+            },
+            // providesTags: (result) => providesList(result, 'Tag'),
         }),
         addLink: builder.mutation({
             query: (link) => ({
@@ -139,6 +146,7 @@ export const {
     middleware,
     
     useLinksQuery,
+    useGetTagsQuery,
     useAddLinkMutation,
     useDeleteLinkMutation,
     useUpdateLinkMutation

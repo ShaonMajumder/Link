@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Components\ApiTrait;
 use App\Models\Link;
+use App\Models\Tag;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -167,5 +168,32 @@ class LinkController extends Controller
                 )
             );
         }
+    }
+
+    /**
+     * List all tags
+     */
+    public function listTags(Request $request){
+        try{
+            $tags = Tag::select('name','causer_id')->get();
+            $this->data = $tags; //->toJson();
+            $this->apiSuccess();
+            return response()->json(
+                ...$this->apiResponseBuilder(
+                    $status_code = Response::HTTP_OK,
+                    $message = 'All tags listed ...!'
+                )
+            );
+            
+        }catch(Exception $e){
+            $this->data = $this->getExceptionError($e); //->first();
+            return response()->json(
+                ...$this->apiResponseBuilder(
+                    $status_code = Response::HTTP_SERVICE_UNAVAILABLE,
+                    $message = 'All tags are not listed ...!'
+                )
+            );
+        }
+       
     }
 }

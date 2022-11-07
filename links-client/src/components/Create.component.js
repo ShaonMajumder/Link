@@ -73,13 +73,16 @@ export default function CreateBook(props) {
   // }
 
   apiClient.get(link_get_tags_url)
-        .then(response => {
-          // setTags(response.data.data)
-          setTags( response.data.data.map(({name,causer_id})=>{
-            console.log(name)
-            return { value: name, label: name }
-          }) );
-        })
+          .then(response => {
+            let tagsCurrent = response.data.data.map(({name,causer_id})=>{
+              // console.log(name)
+              return { value: name, label: name }
+            });
+            console.log(tagsCurrent)
+            // setTags(tagsCurrent)
+              ;
+            
+          })
   
   const options = [
     { value: 'chocolate', label: 'Chocolate' },

@@ -388,6 +388,10 @@ https://hooks.reactivers.com/use-auth
 - RTK providedTags does not work on createApi - https://stackoverflow.com/questions/72175487/rtk-query-always-returns-cached-data-invalidatestags-not-doing-anything
 - Delete will auto refetch useQuery with Tags invalidation, data no manual manipulation needed -https://redux-toolkit.js.org/rtk-query/usage/pagination#automated-re-fetching-of-paginated-queries
 - On Update will auto refetch specific row useQuery with Tags invalidation, data no manual manipulation needed - https://redux-toolkit.js.org/rtk-query/usage/automated-refetching
+- Why is my React component is rendering twice?
+    - https://stackoverflow.com/questions/48846289/why-is-my-react-component-is-rendering-twice
+    - https://reactjs.org/docs/strict-mode.html#detecting-unexpected-side-effects
+- How does React.useState triggers re-render? - https://stackoverflow.com/questions/53024488/how-does-react-usestate-triggers-re-render
 - React-Bootstrap
     - React-bootstrap Table - https://react-bootstrap.github.io/components/table/
     - React-bootstrap Pagination - https://react-bootstrap.github.io/components/pagination/

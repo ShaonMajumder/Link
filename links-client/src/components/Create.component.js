@@ -13,7 +13,7 @@ import Select from 'react-select';
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000"
 
 export default function CreateBook(props) {
-  const [tags, setTags] = useState([])
+  const [tags, setTags] = useState({value:"",label:""})
   
   const { refetch } = linksApi.endpoints.links.useQuerySubscription(props.page)
   const [addBook, { isLoading2 }] = useAddLinkMutation()
@@ -29,6 +29,40 @@ export default function CreateBook(props) {
   const [image, setImage] = useState()
   const [validationError,setValidationError] = useState({})
   
+//   const getTagsFromDB = async () => {
+//     const response = await   apiClient.get(link_get_tags_url);
+//     if (response.status === 200) {
+      
+//       let tagsCurrent = response.data.data.map(({name,causer_id})=>{
+//         // console.log(name)
+//         return { value: name, label: name }
+//       })
+//       console.log(response.data.data)
+
+
+//         setTags(tagsCurrent)
+//     } else {
+//         // notify(userTypes.response.data.message, ERROR);
+//     }
+// }
+
+  // useEffect(() => {
+  //   const loadData = async () => {
+  //       await getTagsFromDB();
+  //   };
+  //   loadData();
+  // }, []);
+
+  const { data: tagItems, isLoading, isSuccess, isError }  = useGetTagsQuery()  
+  React.useEffect(() => {
+      if (tagItems){
+        setTags( tagItems.data.map(({name,causer_id})=>{
+          console.log(name)
+          return { value: name, label: name }
+        }) )
+      }
+  },[tagItems])
+
   const changeHandler = (event) => {
 		setImage(event.target.files[0]);
 	};
@@ -72,17 +106,22 @@ export default function CreateBook(props) {
   //   setTags(tagItems)
   // }
 
-  apiClient.get(link_get_tags_url)
-          .then(response => {
-            let tagsCurrent = response.data.data.map(({name,causer_id})=>{
-              // console.log(name)
-              return { value: name, label: name }
-            });
-            console.log(tagsCurrent)
-            // setTags(tagsCurrent)
-              ;
+  // apiClient.get(link_get_tags_url)
+  //         .then(response => {
+  //           // let tagsCurrent = response.data.data.map(({name,causer_id})=>{
+  //           //   // console.log(name)
+  //           //   return { value: name, label: name }
+  //           // })
+  //           console.log(response.data.data)
+  //           // setTags(response.data.data)
+              
+              
             
-          })
+  //         })
+
+
+
+        
   
   const options = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -135,7 +174,7 @@ export default function CreateBook(props) {
                             {/* <Form.Control as="textarea" rows={3} value={author} onChange={(event)=>{
                               setAuthor(event.target.value)
                             }}/> */}
-                            <Select options={options} isMulti />
+                            <Select options={tags} isMulti />
                         </Form.Group>
                       </Col>
                   </Row>

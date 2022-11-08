@@ -196,4 +196,114 @@ class LinkController extends Controller
         }
        
     }
+
+
+    public function store(Request $request){
+        // Log::info($request->all());
+        // return response()->json($request->all());
+        // dd($request->all());
+        $new_request = $request->except(['_token']);
+        $request_result = false;
+        foreach ($new_request as $value)
+            $request_result = $request_result || ($value != null);
+        $request_result = ($request->file && $request->file != 'undefined') || $request_result;
+        
+        if($request_result ){
+            
+            if($request->tags){
+                if( ! is_array($request->tags) )
+                    $request->tags = explode(",",$request->tags);
+                
+
+                $tag_values = [];
+                foreach($request->tags as $tag){
+                    if( ! is_numeric($tag) and ! Tag::where('name',$tag)->first() ){
+                        
+                        $tagObj = new Tag();
+                        $tagObj->name = $tag;
+                        $tagObj->causer_id = Auth::user()->id;
+                        $tagObj->save();
+                        $tag = $tagObj->id;
+
+                        $text = "New Tag '$tag' added";
+                    }
+                    $tag_values[] = (int)$tag;
+                }
+                
+                $request->tags = $tag_values;
+
+                if($request->link){
+                    $link = Link::where('link',$request->link);
+                    if($link->count() > 0){
+                        $link->update(['tags' => $request->tags]);
+                        $message = "Link updated ...";
+                    }else{
+                        Link::create($request->only('link','tags'));
+                        $message = "New Link created ...";
+                    }    
+                }
+            }
+            
+            if($request->file && $request->file != 'undefined'){
+                $validatedData = $request->validate([
+                    'file' => 'required|max:2048',
+                ]);
+                $name = $request->file('file')->getClientOriginalName();
+                $path = $request->file('file')->store('public/files');
+                
+                
+                $fileName = auth()->id() . '_' . time() . '.'. $request->file->extension();  
+                // dd(public_path(''), $fileName);
+                $request->file->move(public_path(''), $fileName);
+                
+
+                
+
+                $number = 0;
+                $records = [];
+                $lines = file($fileName);
+                
+                foreach($lines as $line){
+                    $link = trim(preg_replace('/\s\s+/', ' ', $line));
+                    $records[] = $link;
+                    // $result = Link::firstOrCreate(['link'=> $link, 'bulkin'=>true ]);
+                    // if($result->wasRecentlyCreated)
+                    //     $number++;
+                }
+                
+                $rows = $records;
+                $matched_result = Link::whereIn('link',$rows)->pluck('link')->toArray();
+                foreach($matched_result as $result)
+                    $temp[$result] = 1;
+                
+                $data = [];
+                foreach($rows as $row){
+                    
+                    if(!isset($temp[$row]) and $row != ''){
+                        $number++;
+                        $data[] = [ 'link' => $row , 'tags' => json_encode($request->tags) ];
+                    }
+                }
+                    
+                Link::insert($data);
+
+                $this->apiSuccess();
+                return $this->apiOutput(Response::HTTP_OK, $number." Links added ...");
+                
+            }
+            
+
+            // $myfile = fopen("contents.list", "a") or die("Unable to open file!");
+            // $txt = $request->link;
+            // fwrite($myfile, "\n". $txt);
+            // fclose($myfile);
+
+            $this->apiSuccess();
+            return $this->apiOutput(Response::HTTP_OK, $message  ?? " Links added ...");  
+            // return $this->listLinks('New People added ...');
+        }else{
+            return $this->apiOutput(Response::HTTP_OK, "Minimum one field is required ...");
+        }
+        
+    }
 }

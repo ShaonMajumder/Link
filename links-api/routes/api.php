@@ -26,6 +26,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::prefix('links')->name('links.')->group(function(){
         Route::get('/', [LinkController::class, "listLinks"]);
         Route::get('/tags', [LinkController::class, "listTags"]);
+        Route::post('/store', [LinkController::class, "store"]);
+
         Route::get('/{id}', [LinkController::class, "getLink"]);
         Route::post('/add', [LinkController::class, "addLink"]);
         Route::put('/update/{id}',  [LinkController::class, "updateLink"]);

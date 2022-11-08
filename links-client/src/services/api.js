@@ -77,7 +77,7 @@ export const linksApi = createApi({
         }),
         addLink: builder.mutation({
             query: (link) => ({
-                url : '/links/add',
+                url : '/links/store',
                 method: "POST",
                 body: link
             }),

@@ -5,18 +5,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Swal from 'sweetalert2';
 import { Redirect, useHistory } from 'react-router-dom';
-import apiClient, { linksApi, book_create_url, useAddLinkMutation,useGetTagsQuery, link_get_tags_url } from '../services/api';
+import apiClient, { linksApi, book_create_url, useAddLinkMutation,useGetTagsQuery, link_get_tags_url,link_create_url } from '../services/api';
 import store from "../store";
-import Select from 'react-select';
-// import makeAnimated from 'react-select/animated';
+import CreatableSelect from 'react-select/creatable';
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000"
 
 export default function CreateBook(props) {
   const [tags, setTags] = useState({value:"",label:""})
+  const [selectedTags, setSelectedTags] = useState([])
   
   const { refetch } = linksApi.endpoints.links.useQuerySubscription(props.page)
-  const [addBook, { isLoading2 }] = useAddLinkMutation()
+  const [addLink, { isLoading2 }] = useAddLinkMutation()
   // const page = props.page;
   // const setPage = props.setPage;
   const history = props.history()
@@ -79,11 +79,14 @@ export default function CreateBook(props) {
     formData.append('image', image)
 
     const json_data = {
-      'link' : link,
-      'author' : author
+      link : link,
+      tags : selectedTags
     }
+    // apiClient.post(link_create_url,json_data).then((response)=>{
+    //   console.log(response)
+    // })
 
-    await addBook(json_data).unwrap()
+    await addLink(json_data).unwrap()
     .then((payload) => {
       console.log('success creation',payload)
       Swal.fire({
@@ -174,7 +177,11 @@ export default function CreateBook(props) {
                             {/* <Form.Control as="textarea" rows={3} value={author} onChange={(event)=>{
                               setAuthor(event.target.value)
                             }}/> */}
-                            <Select options={tags} isMulti />
+                            <CreatableSelect options={tags} isMulti onChange={(choice) => {
+                              setSelectedTags( choice.map(({label,value}) => {
+                                return value;
+                              }) )
+                            }} />
                         </Form.Group>
                       </Col>
                   </Row>

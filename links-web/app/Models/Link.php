@@ -10,6 +10,6 @@ class Link extends Model
     use HasFactory;
     protected $guarded = ['_token'];
     protected $casts = [
-        'tags' => 'array', // Will converted to (Array)
+        'tags' => 'array',
     ];
 }

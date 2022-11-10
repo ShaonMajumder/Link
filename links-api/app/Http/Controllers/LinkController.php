@@ -8,6 +8,7 @@ use App\Models\Tag;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -222,9 +223,7 @@ class LinkController extends Controller
                         
                         $tagObj = new Tag();
                         $tagObj->name = $tag;
-                        return response()->json($tagObj->toJson());
-                        $tagObj->causer_id = Auth::user()->id ?? $request->user()->id;
-                        
+                        $tagObj->causer_id = Auth::user()->id;
                         $tagObj->save();
                         $tag = $tagObj->id;
 
@@ -233,8 +232,9 @@ class LinkController extends Controller
                     $tag_values[] = (int)$tag;
                 }
                 
+                
                 $request->tags = $tag_values;
-
+                
                 if($request->link){
                     $link = Link::where('link',$request->link);
                     if($link->count() > 0){
@@ -245,6 +245,8 @@ class LinkController extends Controller
                         $message = "New Link created ...";
                     }    
                 }
+
+                
             }
             
             if($request->file && $request->file != 'undefined'){
@@ -301,11 +303,21 @@ class LinkController extends Controller
             // fwrite($myfile, "\n". $txt);
             // fclose($myfile);
 
+            
             $this->apiSuccess();
-            return $this->apiOutput(Response::HTTP_OK, $message  ?? " Links added ...");  
-            // return $this->listLinks('New People added ...');
+            return response()->json(
+                ...$this->apiResponseBuilder(
+                    $status_code = Response::HTTP_OK,
+                    $message     = $message,
+                )
+            );
         }else{
-            return $this->apiOutput(Response::HTTP_OK, "Minimum one field is required ...");
+            return response()->json(
+                ...$this->apiResponseBuilder(
+                    $status_code = Response::HTTP_UNPROCESSABLE_ENTITY,
+                    $message     = 'Minimum one field is required ...',
+                )
+            );
         }
         
     }

@@ -100,7 +100,12 @@ export default function CreateBook(props) {
       
       history.push('/')
     })
-    .catch((error) => console.error('rejected', error))
+    .catch((error) => {
+      Swal.fire({
+        icon:"error",
+        text: error.data.message
+      })
+    })
   }
 
   // const { data: tagItems, isLoading, isSuccess, isError }  = useGetTagsQuery()

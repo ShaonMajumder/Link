@@ -97,14 +97,14 @@ export default function CreateBook(props) {
       // refetch()
       let last_page = store.getState().books.last_page
       props.setPage(last_page)
-      
       history.push('/')
-    })
-    .catch((error) => {
-      Swal.fire({
-        icon:"error",
-        text: error.data.message
-      })
+    }).catch((error) => {
+      if(error.data){ // check for double rending problem, fix this
+        Swal.fire({
+          icon:"error",
+          text: error.data.message
+        })
+      }
     })
   }
 

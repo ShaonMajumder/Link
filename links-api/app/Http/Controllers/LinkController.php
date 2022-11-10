@@ -208,20 +208,23 @@ class LinkController extends Controller
             $request_result = $request_result || ($value != null);
         $request_result = ($request->file && $request->file != 'undefined') || $request_result;
         
+
         if($request_result ){
             
             if($request->tags){
                 if( ! is_array($request->tags) )
                     $request->tags = explode(",",$request->tags);
                 
-
+                    
                 $tag_values = [];
                 foreach($request->tags as $tag){
                     if( ! is_numeric($tag) and ! Tag::where('name',$tag)->first() ){
                         
                         $tagObj = new Tag();
                         $tagObj->name = $tag;
-                        $tagObj->causer_id = Auth::user()->id;
+                        return response()->json($tagObj->toJson());
+                        $tagObj->causer_id = Auth::user()->id ?? $request->user()->id;
+                        
                         $tagObj->save();
                         $tag = $tagObj->id;
 

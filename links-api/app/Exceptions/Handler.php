@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         // dd( $request->path(), $request->path(), $request->method(), Route::getRoutes(),$exception);
-        if($this->pathExistedOnRoutes($request)){
+        if( ! $this->pathExistedOnRoutes($request)){
             $this->data = [
                 'not_found'=>'Your Route URI is incomplete!'
             ];

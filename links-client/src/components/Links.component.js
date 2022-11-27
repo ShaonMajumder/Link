@@ -90,11 +90,11 @@ const LinkList = (props) => {
     if (props.loggedIn && linkItems) {
         let data = linkItems.data.links
         var data_prop = [data.current_page, data.last_page, isSuccess, setPage];
-        const linkList =linkItemsAll.map(({ id, title, author }) => 
+        const linkList =linkItemsAll.map(({ id, link, tag_label }) => 
             <tr key={id}>
                 <td>{id}</td>
-                <td>{title}</td>
-                <td>{author}</td>
+                <td>{link}</td>
+                <td>{tag_label}</td>
                 <td>
                     <GoTrashcan className='table-icons' onClick={()=>deleteProduct(id)} />
                     <FaEdit className='table-icons' onClick={ ()=> history.push(`/links/update/${id}`) } />
@@ -111,8 +111,8 @@ const LinkList = (props) => {
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Title</th>
-                        <th>Author</th>
+                        <th>Link</th>
+                        <th>Tags</th>
                         <th>Actions</th>
                     </tr>
                     </thead>

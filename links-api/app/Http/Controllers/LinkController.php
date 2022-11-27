@@ -222,18 +222,22 @@ class LinkController extends Controller
                 
                     
                 $tag_values = [];
+                
                 foreach($request->tags as $tag){
-                    if( ! is_numeric($tag) and ! Tag::where('name',$tag)->first() ){
+                    $tag_name_id = Tag::where('name',$tag)->first();
+                    if( ! is_numeric($tag) and ! $tag_name_id ){   
                         $tagObj = new Tag();
                         $tagObj->name = $tag;
                         $tagObj->causer_id = Auth::user()->id;
                         $tagObj->save();
                         $tag = $tagObj->id;
                         $text = "New Tag '$tag' added";
+
+                        $tag_values[] = (int)$tag;
+                    }else{    
+                        $tag_values[] = $tag_name_id->id;
                     }
-                    $tag_values[] = (int)$tag;
                 }
-                
                 
                 $request->merge(['tags' => $tag_values]);
                 
@@ -243,7 +247,7 @@ class LinkController extends Controller
                         $link->update(['tags' => $request->tags]);
                         $message = "Link updated ...";
                     }else{
-                        Link::create($request->only('link','tags'));
+                        Link::create($request->only('link','tags','description'));
                         $message = "New Link created ...";
                     }    
                 }

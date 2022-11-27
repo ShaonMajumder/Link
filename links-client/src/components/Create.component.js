@@ -29,29 +29,29 @@ export default function CreateBook(props) {
   const [image, setImage] = useState()
   const [validationError,setValidationError] = useState({})
   
-//   const getTagsFromDB = async () => {
-//     const response = await   apiClient.get(link_get_tags_url);
-//     if (response.status === 200) {
+  const getTagsFromDB = async () => {
+    const response = await   apiClient.get(link_get_tags_url);
+    if (response.status === 200) {
       
-//       let tagsCurrent = response.data.data.map(({name,causer_id})=>{
-//         // console.log(name)
-//         return { value: name, label: name }
-//       })
-//       console.log(response.data.data)
+      let tagsCurrent = response.data.data.map(({name,causer_id})=>{
+        // console.log(name)
+        return { value: name, label: name }
+      })
+      console.log(response.data.data)
 
 
-//         setTags(tagsCurrent)
-//     } else {
-//         // notify(userTypes.response.data.message, ERROR);
-//     }
-// }
+        setTags(tagsCurrent)
+    } else {
+        // notify(userTypes.response.data.message, ERROR);
+    }
+  }
 
-  // useEffect(() => {
-  //   const loadData = async () => {
-  //       await getTagsFromDB();
-  //   };
-  //   loadData();
-  // }, []);
+  useEffect(() => {
+    const loadData = async () => {
+        await getTagsFromDB();
+    };
+    loadData();
+  }, []);
 
   const { data: tagItems, isLoading, isSuccess, isError }  = useGetTagsQuery()  
   React.useEffect(() => {

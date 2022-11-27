@@ -33,6 +33,10 @@ class LinkController extends Controller
         );
     }
     
+    public function getTags($tags){
+        
+        return Tag::whereIn('id',$tags)->pluck('name');
+    }
 
     public function getLink(Request $request,Link $id){        
         $this->apiSuccess();
@@ -220,20 +224,18 @@ class LinkController extends Controller
                 $tag_values = [];
                 foreach($request->tags as $tag){
                     if( ! is_numeric($tag) and ! Tag::where('name',$tag)->first() ){
-                        
                         $tagObj = new Tag();
                         $tagObj->name = $tag;
                         $tagObj->causer_id = Auth::user()->id;
                         $tagObj->save();
                         $tag = $tagObj->id;
-
                         $text = "New Tag '$tag' added";
                     }
                     $tag_values[] = (int)$tag;
                 }
                 
                 
-                $request->tags = $tag_values;
+                $request->merge(['tags' => $tag_values]);
                 
                 if($request->link){
                     $link = Link::where('link',$request->link);

@@ -29,18 +29,14 @@ export default function CreateBook(props) {
   const [image, setImage] = useState()
   const [validationError,setValidationError] = useState({})
   
+  /*
   const getTagsFromDB = async () => {
-    const response = await   apiClient.get(link_get_tags_url);
+    const response = await apiClient.get(link_get_tags_url);
     if (response.status === 200) {
-      
       let tagsCurrent = response.data.data.map(({name,causer_id})=>{
-        // console.log(name)
         return { value: name, label: name }
       })
-      console.log(response.data.data)
-
-
-        setTags(tagsCurrent)
+      setTags(tagsCurrent)
     } else {
         // notify(userTypes.response.data.message, ERROR);
     }
@@ -52,6 +48,7 @@ export default function CreateBook(props) {
     };
     loadData();
   }, []);
+  */
 
   const { data: tagItems, isLoading, isSuccess, isError }  = useGetTagsQuery()  
   React.useEffect(() => {
@@ -72,15 +69,16 @@ export default function CreateBook(props) {
 
     const formData = new FormData()
 
-    formData.append('link', link)
-    formData.append('author', author)
-    formData.append('description', description)
-    formData.append('amount', amount)
-    formData.append('image', image)
+    // formData.append('link', link)
+    // formData.append('author', author)
+    // formData.append('description', description)
+    // formData.append('amount', amount)
+    // formData.append('image', image)
 
     const json_data = {
       link : link,
-      tags : selectedTags
+      tags : selectedTags,
+      description : description
     }
     // apiClient.post(link_create_url,json_data).then((response)=>{
     //   console.log(response)
@@ -190,16 +188,7 @@ export default function CreateBook(props) {
                         </Form.Group>
                       </Col>
                   </Row>
-                  <Row className="my-3">
-                      <Col>
-                        <Form.Group controlId="Author">
-                            <Form.Label>Author</Form.Label>
-                            <Form.Control as="textarea" rows={3} value={author} onChange={(event)=>{
-                              setAuthor(event.target.value)
-                            }}/>
-                        </Form.Group>
-                      </Col>
-                  </Row>
+                                  
                   <Row className="my-3">
                       <Col>
                         <Form.Group controlId="Description">
@@ -210,6 +199,18 @@ export default function CreateBook(props) {
                         </Form.Group>
                       </Col>
                   </Row>
+                    
+                  {/* <Row className="my-3">
+                      <Col>
+                        <Form.Group controlId="Author">
+                            <Form.Label>Author</Form.Label>
+                            <Form.Control as="textarea" rows={3} value={author} onChange={(event)=>{
+                              setAuthor(event.target.value)
+                            }}/>
+                        </Form.Group>
+                      </Col>
+                  </Row>
+                  
                   <Row> 
                       <Col>
                         <Form.Group controlId="Amount">
@@ -227,7 +228,8 @@ export default function CreateBook(props) {
                         <Form.Control type="file" onChange={changeHandler} />
                       </Form.Group>
                     </Col>
-                  </Row>
+                  </Row> */}
+                  
                   <Button variant="primary" className="mt-2" size="lg" block="block" type="submit">
                     Save
                   </Button>

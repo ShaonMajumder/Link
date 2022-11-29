@@ -83,6 +83,7 @@ const LinkList = (props) => {
 
     React.useEffect(() => {
         if (linkItems) {
+            console.log(linkItems.data.links.data)
             setLinkItemsAll(linkItems.data.links.data)
         }
     }, [linkItems])
@@ -90,11 +91,12 @@ const LinkList = (props) => {
     if (props.loggedIn && linkItems) {
         let data = linkItems.data.links
         var data_prop = [data.current_page, data.last_page, isSuccess, setPage];
-        const linkList = linkItemsAll.map(({ id, link, tag_label }) =>
-            < tr key={id} >
+        const linkList = linkItemsAll.map(({ id, link, tag_label, description }) =>
+            <tr key={id}>
                 <td>{id}</td>
                 <td>{link}</td>
                 <td>{Object.values(tag_label || []).join(', ')}</td>
+                <td>{description}</td>
                 <td>
                     <GoTrashcan className='table-icons' onClick={() => deleteProduct(id)} />
                     <FaEdit className='table-icons' onClick={() => history.push(`/links/update/${id}`)} />
@@ -113,17 +115,18 @@ const LinkList = (props) => {
                             <th>#</th>
                             <th>Link</th>
                             <th>Tags</th>
+                            <th>Description</th>
                             <th>Actions</th>
                         </tr>
-                    </thead>
+                    </thead >
                     <tbody>
                         {linkList}
                     </tbody>
-                </Table>
+                </Table >
 
 
                 <PaginationCustom props={data_prop} ></PaginationCustom>
-            </div>
+            </div >
         );
     }
     return (

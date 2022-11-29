@@ -76,7 +76,7 @@ const App = () => {
           <Route path='/links/create' render={props => (
             <CreateLink history={useHistory} page={page} setPage={setPage}  />
           )} />
-          <Route path='/links/update/:id' render={props => (
+          <Route path='/links/update/:linkid' render={props => (
             <EditLink {...props}  history={useHistory} page={page} setPage={setPage} linkItems={linkItems} setLinkItems={setLinkItems} props={[setLinkItems]}/>
           )} />
         </Switch>

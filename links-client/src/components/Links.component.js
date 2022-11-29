@@ -94,7 +94,7 @@ const LinkList = (props) => {
             < tr key={id} >
                 <td>{id}</td>
                 <td>{link}</td>
-                <td>{Object.values(tag_label || '').join(',')}</td>
+                <td>{Object.values(tag_label || []).join(', ')}</td>
                 <td>
                     <GoTrashcan className='table-icons' onClick={() => deleteProduct(id)} />
                     <FaEdit className='table-icons' onClick={() => history.push(`/links/update/${id}`)} />

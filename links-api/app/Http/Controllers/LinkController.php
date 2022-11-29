@@ -35,7 +35,7 @@ class LinkController extends Controller
     
     public function getTags($tags){
         
-        return Tag::whereIn('id',$tags)->pluck('name');
+        return Tag::whereIn('id',$tags)->pluck('name','id');
     }
 
     public function getLink(Request $request,Link $id){        

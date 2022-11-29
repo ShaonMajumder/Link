@@ -69,6 +69,12 @@ export const linksApi = createApi({
 
 
         }),
+        getLink: builder.query({
+            query: (page = 1) => {
+                return `/links/${page}`;
+            },
+            providesTags: ['Link'],
+        }),
         getTags: builder.query({
             query: () => {
                 return `/links/tags`;
@@ -146,6 +152,7 @@ export const {
     middleware,
     
     useLinksQuery,
+    useGetLinkQuery,
     useGetTagsQuery,
     useAddLinkMutation,
     useDeleteLinkMutation,

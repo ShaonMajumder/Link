@@ -65,6 +65,10 @@
                 left: 5%;
                 transition: 0.6s ease all;
             }
+
+            .app-running{
+                text-shadow: 1px 1px 2px rgb(20, 165, 44), 0 0 1em rgb(187, 255, 0), 0 0 0.2em rgb(167, 221, 42);
+            }
         </style>
     </head>
     <body class="antialiased">
@@ -130,7 +134,7 @@
                                     <path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <div class="ml-4 text-lg leading-7 font-semibold">
-                                    <a href="https://kxsourcing.com/" class="underline text-gray-900 dark:text-white">Links</a>
+                                    <a href="https://kxsourcing.com/" class="app-running underline text-gray-900 dark:text-white" >Links</a>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +145,7 @@
                                     <path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <div class="ml-4 text-lg leading-7 font-semibold">
-                                    <a href="https://kxtransports.com/" class="underline text-gray-900 dark:text-white">Links</a>
+                                    <a href="https://kxtransports.com/" class="app-running underline text-gray-900 dark:text-white">Books</a>
                                 </div>
                             </div>
                         </div>

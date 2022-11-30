@@ -11,6 +11,9 @@ date: 18-10-2022
 - CRUD (Unimplemented)
 - Search (Unimplemented)
 
+### User Features
+- Create, Edit, Delete
+
 ### Dev Features
 - Authentication (Bearer Token Based, Context Based)
 - CRUD (Redux Based)

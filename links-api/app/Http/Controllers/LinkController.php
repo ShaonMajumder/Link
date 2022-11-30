@@ -111,11 +111,11 @@ class LinkController extends Controller
     public function updateLink(Request $request, Link $id){
         // dd($request->except('_method'));
         $validator = Validator::make($request->all(),[
-            'title' => ['required'],
-            'author' => ['required'],
-            'image' => ['image']
+            'link' => ['required'],
+            'tags' => ['required']
         ]);
 
+        
         if($validator->fails()){
             $this->data = $validator->errors(); //->first();
             return response()->json(
@@ -125,11 +125,33 @@ class LinkController extends Controller
                 )
             );
         }
-
+        
+        if($request->tags){
+            foreach($request->tags as $tag){
+                $tag_name_id = Tag::where('name',$tag)->first();
+                if( ! is_numeric($tag) and ! $tag_name_id ){   
+                    $tagObj = new Tag();
+                    $tagObj->name = $tag;
+                    $tagObj->causer_id = Auth::user()->id;
+                    $tagObj->save();
+                    $tag = $tagObj->id;
+                    $text = "New Tag '$tag' added";
+    
+                    $tag_values[] = (int)$tag;
+                }else{    
+                    $tag_values[] = $tag_name_id->id;
+                }
+            }
+            
+            $request->merge(['tags' => $tag_values]);
+        }
+        
         try{
-            $id->title = $request->title;
-            $id->author = $request->author;
+            $id->link = $request->link;
+            $id->tags = $request->tags;
+            $id->description = $request->description;
             $id->save();
+            
             $this->apiSuccess();
             $this->data = $id;
             return response()->json(

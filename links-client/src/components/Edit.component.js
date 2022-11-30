@@ -116,9 +116,10 @@ export default function EditLink(props) {
     }
 
     const json_data = {
-      'id' : id,
+      'id' : linkid,
       'link' : link,
-      'author' : author,
+      'description' : description,
+      'tags': selectedTags
     }
     updateLink(json_data).unwrap()
     .then((payload) => {

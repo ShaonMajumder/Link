@@ -1,62 +1,96 @@
 [
     {
-        "link" : "https://stackoverflow.com/questions/15308723/escaping-spaces-in-a-select-result",
-        "tags" : ["education","stackoverflow","mysql","ict"],
-        "search_string" : "ascending escaping whitespace mysql"
+        "link": "https://stackoverflow.com/questions/15308723/escaping-spaces-in-a-select-result",
+        "tags": [
+            "education",
+            "stackoverflow",
+            "mysql",
+            "ict"
+        ],
+        "search_string": "ascending escaping whitespace mysql"
     },
     {
-        "link" : "https://www.w3schools.com/sql/func_mysql_trim.asp#:~:text=The%20TRIM()%20function%20removes%20leading%20and%20trailing%20spaces%20from%20a%20string.",
-        "tags" : ["education","stackoverflow","mysql","ict"],
-        "search_string" : "how to remove preceding spaces in mysql"
+        "link": "https://www.w3schools.com/sql/func_mysql_trim.asp#:~:text=The%20TRIM()%20function%20removes%20leading%20and%20trailing%20spaces%20from%20a%20string.",
+        "tags": [
+            "education",
+            "stackoverflow",
+            "mysql",
+            "ict"
+        ],
+        "search_string": "how to remove preceding spaces in mysql"
     },
     {
-        "link" : "https://stackoverflow.com/questions/1504962/how-to-remove-new-line-characters-from-data-rows-in-mysql",
-        "tags" : ["education","stackoverflow","mysql","ict"],
-        "search_string" : "mysql remove newline"
+        "link": "https://stackoverflow.com/questions/1504962/how-to-remove-new-line-characters-from-data-rows-in-mysql",
+        "tags": [
+            "education",
+            "stackoverflow",
+            "mysql",
+            "ict"
+        ],
+        "search_string": "mysql remove newline"
     },
     {
-        "link" : "https://www.itsolutionstuff.com/post/laravel-9-model-events-example-tutorialexample.html",
-        "tags" : ["education","stackoverflow","ict"],
-        "search_string" : "model events laravel documentation"
+        "link": "https://www.itsolutionstuff.com/post/laravel-9-model-events-example-tutorialexample.html",
+        "tags": [
+            "education",
+            "stackoverflow",
+            "ict"
+        ],
+        "search_string": "model events laravel documentation"
     },
     {
-        "link" : "https://stackoverflow.com/questions/28619194/take-an-action-after-any-model-is-created-updated-or-deleted-in-laravel",
-        "tags" : ["education","stackoverflow","ict"],
-        "search_string" : "laravel model actions, listener on create or laravel laravel eloquent"
+        "link": "https://stackoverflow.com/questions/28619194/take-an-action-after-any-model-is-created-updated-or-deleted-in-laravel",
+        "tags": [
+            "education",
+            "stackoverflow",
+            "ict"
+        ],
+        "search_string": "laravel model actions, listener on create or laravel laravel eloquent"
     },
     {
-        "link" : "https://www.youtube.com/watch?v=l9X3qXOkhvA",
-        "tags" : ["mountaineering","video"],
-        "search_string" : ""
+        "link": "https://www.youtube.com/watch?v=l9X3qXOkhvA",
+        "tags": [
+            "mountaineering",
+            "video"
+        ],
+        "search_string": ""
     },
     {
-        "link" : "https://www.youtube.com/watch?v=cihWMPNDRco",
-        "tags" : ["mountaineering","video"],
-        "search_string" : ""
+        "link": "https://www.youtube.com/watch?v=cihWMPNDRco",
+        "tags": [
+            "mountaineering",
+            "video"
+        ],
+        "search_string": ""
     },
     {
-        "link" : "https://javascript.plainenglish.io/how-to-add-to-an-array-in-react-state-3d08ddb2e1dc",
-        "tags" : ["hook","appending-to-array","react-js","video"],
-        "search_string" : "append value to array hook variable in react"
+        "link": "https://javascript.plainenglish.io/how-to-add-to-an-array-in-react-state-3d08ddb2e1dc",
+        "tags": [
+            "hook",
+            "appending-to-array",
+            "react-js",
+            "video"
+        ],
+        "search_string": "append value to array hook variable in react"
     },
     {
-        "link" : "",
-        "tags" : [],
-        "search_string" : ""
+        "link": "https://stackoverflow.com/questions/31577588/laravel-5-1-php-domdocument-class-not-found",
+        "tags": ["stackoverflow","ict"],
+        "search_string": "App\\Http\\Controllers\\DOMDocument not found"
     },
     {
-        "link" : "",
-        "tags" : [],
-        "search_string" : ""
+        "link": "https://stackoverflow.com/questions/62061642/how-to-check-if-axios-call-fails-due-to-no-internet-connection",
+        "tags": ["ict","stackoverflow"],
+        "search_string": "check if network error in react"
     },
     {
-        "link" : "",
-        "tags" : [],
-        "search_string" : ""
+        "link": "",
+        "tags": [],
+        "search_string": ""
     },
     {
-        "link" : "",
-        "tags" : [],
-        "search_string" : ""
+        "link": "",
+        "tags": [],
+        "search_string": ""
     }
 ]

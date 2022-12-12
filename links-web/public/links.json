@@ -75,13 +75,40 @@
     },
     {
         "link": "https://stackoverflow.com/questions/31577588/laravel-5-1-php-domdocument-class-not-found",
-        "tags": ["stackoverflow","ict"],
+        "tags": [
+            "stackoverflow",
+            "ict"
+        ],
         "search_string": "App\\Http\\Controllers\\DOMDocument not found"
     },
     {
         "link": "https://stackoverflow.com/questions/62061642/how-to-check-if-axios-call-fails-due-to-no-internet-connection",
-        "tags": ["ict","stackoverflow"],
+        "tags": [
+            "ict",
+            "stackoverflow"
+        ],
         "search_string": "check if network error in react"
+    },
+    {
+        "link": "https://stackoverflow.com/questions/23401365/laravel-at-least-one-field-required-validation",
+        "tags": [
+            "ict",
+            "stackoverflow"
+        ],
+        "search_string": "at least one field is required laravel validator"
+    },
+    {
+        "link": "https://www.youtube.com/watch?v=KDqGNkvhQGU",
+        "tags": [
+            "mountaineering",
+            "ict"
+        ],
+        "search_string": ""
+    },
+    {
+        "link": "https://8bityard.com/how-to-get-the-title-and-description-of-any-url-in-laravel/",
+        "tags": [],
+        "search_string": "get website title from url laravel php"
     },
     {
         "link": "",

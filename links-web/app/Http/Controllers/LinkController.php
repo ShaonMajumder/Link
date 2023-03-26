@@ -278,8 +278,6 @@ class LinkController extends Controller
             return $this->apiOutput(Response::HTTP_BAD_REQUEST, $this->getValidationError($validated) );
         }
 
-        dd($request->tags);
-
         $request->merge([
             'tags' => explode(",",$request->tags)
         ]);

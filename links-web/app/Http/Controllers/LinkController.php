@@ -136,17 +136,25 @@ class LinkController extends Controller
             $tagObj = Tag::where('name',$tag);
         }
         
+        
         if( $tagObj->count() > 0 ){
             // link:$('#link').val(),
             // tags:$('#tag').val()
             $parents = [];
             $current = $tagObj->first();
-            $parent_tags = Tag::whereIn('id',$current->parent_id)->get();
-
-            foreach( $parent_tags as $tag ){
-                $parents[] = $tag;
+            if($current->parent_id){
+                if( is_int($current->parent_id) ){
+                    $parent_id_arr =[$current->parent_id];
+                    $current->update(['parent_id' => $parent_id_arr ]); // correction code
+                }else{
+                    $parent_id_arr =$current->parent_id;
+                }
+                $parent_tags = Tag::whereIn('id',$parent_id_arr)->get();
+                foreach( $parent_tags as $tag ){
+                    $parents[] = $tag;
+                }
             }
-        // there is no parent tag exception
+            
             $this->apiSuccess();
             $this->data = $parents;
             $message = "Parent tags got successfully";

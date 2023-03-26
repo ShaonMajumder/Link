@@ -143,7 +143,7 @@ $(document).ready( function() {
       contentType: false,  // tell jQuery not to set contentType
       success:function(response){
         toastr.success(response.message);
-        // window.location.href = "{{ route('links.list','message=New links added ...') }}";
+        // window.location.href = "{{ route('links.index','message=New links added ...') }}";
         // if(response.status)
         //   $('#form')[0].reset();
       },

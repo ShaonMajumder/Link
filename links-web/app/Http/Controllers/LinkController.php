@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class LinkController extends Controller
 {
@@ -120,7 +121,7 @@ class LinkController extends Controller
         }
     }
 
-    public function linkEdit(Link $link){
+    public function edit(Link $link){
         dd($link);
     }
 
@@ -128,44 +129,48 @@ class LinkController extends Controller
         dd($user);
     }
 
-    public function selectAllParents(Tag $tag){
-        // link:$('#link').val(),
-        // tags:$('#tag').val()
-
-        $parents = [];
-        $current = $tag;
-        while($current->parent){
-            $parents[] = $current->toArray();
-            $current = $current->parent;
+    public function selectAllParents($tag){
+        if(is_numeric($tag)){
+            $tagObj = Tag::where('id',$tag);
+        }else{
+            $tagObj = Tag::where('name',$tag);
         }
-        if($current)
-            $parents[] = $current->toArray();
-            
-        $this->apiSuccess();
-        $this->data = $parents;
-        return $this->apiOutput(Response::HTTP_OK, "Parent tags got successfully");
+        
+        if( $tagObj->count() > 0 ){
+            // link:$('#link').val(),
+            // tags:$('#tag').val()
+            $parents = [];
+            $current = $tagObj->first();
+            $parent_tags = Tag::whereIn('id',$current->parent_id)->get();
+
+            foreach( $parent_tags as $tag ){
+                $parents[] = $tag;
+            }
+        // there is no parent tag exception
+            $this->apiSuccess();
+            $this->data = $parents;
+            $message = "Parent tags got successfully";
+            return $this->apiOutput(Response::HTTP_OK, $message);
+        }else{
+            $message = $tag." is a new tag ...";
+            return $this->apiOutput(Response::HTTP_OK, $message);
+        }
     }
 
     public function tagUpdate(Tag $tag,Request $request){
         if($request->tags){
-            $all_numeric = true;
-
             foreach ($request->tags as $key) { 
                 if (!(is_numeric($key))) {
-                    $all_numeric = false;
-                    break;
+                    return $this->apiOutput(Response::HTTP_OK,"Adding new tags are not allowed here, added them in link entry ...");
                 } 
+                $tagA = Tag::find($key);
+                $tag_ids = $tagA->parent_id;
+                $tag_ids[] = $tag->id;
+                $tagA->update(['parent_id'=> array_unique($tag_ids) ]);
             }
 
-            if ($all_numeric) {
-                $request_tags = ( is_array($request->tags) ? $request->tags : explode(',', $request->tags) ) ?? [] ;
-                $tags =Tag::whereIn('id',$request_tags)->update(['parent_id'=>$tag->id]);
-                $this->apiSuccess();
-                return $this->apiOutput(Response::HTTP_OK,"Child Tags Updated ...");
-            } 
-            else {
-                return $this->apiOutput(Response::HTTP_OK,"Adding new tags are not allowed here, added them in link entry ...");
-            }
+            $this->apiSuccess();
+            return $this->apiOutput(Response::HTTP_OK,"Child Tags Updated ...");
         }else{
             // empty from all child tags
             $tags =Tag::where('parent_id',$tag->id)->update(['parent_id' => null]);
@@ -183,7 +188,8 @@ class LinkController extends Controller
 
     public function tagEditPage(Tag $tag){
         $tags = Tag::all();
-        return view('link.tags.edit',compact('tags','tag'));
+        $child_tags = Tag::whereJsonContains('parent_id',$tag->id)->pluck('id')->toArray();
+        return view('link.tags.edit',compact('tags','tag','child_tags'));
     }
 
     public function tagsIndex(){
@@ -192,7 +198,6 @@ class LinkController extends Controller
     }
 
     public function checkUniqueLink(Request $request){
-        
         $link = Link::where('link',$request->link);
 
         $check_unique = false;
@@ -263,98 +268,97 @@ class LinkController extends Controller
         ];
     }
     
-    public function insert(Request $request){
+    public function store(Request $request){
+        $validated = Validator::make($request->all(),[
+            'link' => 'required', //unique:links
+            'tags' => 'required',
+        ]);
+
+        if($validated->fails()){
+            return $this->apiOutput(Response::HTTP_BAD_REQUEST, $this->getValidationError($validated) );
+        }
+
+        dd($request->tags);
+
+        $request->merge([
+            'tags' => explode(",",$request->tags)
+        ]);
+
+        // dd($request->all());
         // dd($this->getLinkDetails($request));
-        $new_request = $request->except(['_token']);
-        $request_result = false;
-        foreach ($new_request as $value)
-            $request_result = $request_result || ($value != null);
-        $request_result = ($request->file && $request->file != 'undefined') || $request_result;
+        // $request->request->remove('_token');
 
-        
-        if($request_result ){
-            
-            if($request->tags){
-                if( ! is_array($request->tags) )
-                    $request->tags = explode(",",$request->tags);
-                
-
-                $tag_values = [];
-                foreach($request->tags as $tag){
-                    if( ! is_numeric($tag) and ! Tag::where('name',$tag)->first() ){
-                        
-                        $tagObj = new Tag();
-                        $tagObj->name = $tag;
-                        $tagObj->causer_id = Auth::user()->id;
-                        $tagObj->save();
-                        $tag = $tagObj->id;
-
-                        $text = "New Tag '$tag' added";
-                    }
-                    $tag_values[] = (int)$tag;
-                }
-                
-                $request->tags = $tag_values;
-
-                if($request->link){
-                    $link = Link::where('link',$request->link);
-                    if($link->count() > 0){
-                        $link->update(['tags' => $request->tags]);
-                        $message = "Link updated ...";
-                    }else{
-                        Link::create($request->only('link','tags'));
-                        $message = "New Link created ...";
-                    }    
-                }
-            }
-            
-            if($request->file && $request->file != 'undefined'){
-                $validatedData = $request->validate([
-                    'file' => 'required|max:2048',
+        $tag_values = [];
+        foreach($request->tags as $tag){
+            if( !is_numeric($tag) && Tag::where('name',$tag)->count() == 0 ){
+                $tagObj = Tag::create([
+                    'name' => $tag,
+                    'causer_id' => Auth::user()->id
                 ]);
-                $name = $request->file('file')->getClientOriginalName();
-                $path = $request->file('file')->store('public/files');
-                
-                
-                $fileName = auth()->id() . '_' . time() . '.'. $request->file->extension();  
-                // dd(public_path(''), $fileName);
-                $request->file->move(public_path(''), $fileName);
-                
-
-                
-
-                $number = 0;
-                $records = [];
-                $lines = file($fileName);
-                
-                foreach($lines as $line){
-                    $link = trim(preg_replace('/\s\s+/', ' ', $line));
-                    $records[] = $link;
-                    // $result = Link::firstOrCreate(['link'=> $link, 'bulkin'=>true ]);
-                    // if($result->wasRecentlyCreated)
-                    //     $number++;
-                }
-                
-                $rows = $records;
-                $matched_result = Link::whereIn('link',$rows)->pluck('link')->toArray();
-                foreach($matched_result as $result)
-                    $temp[$result] = 1;
-                
-                $data = [];
-                foreach($rows as $row){
-                    
-                    if(!isset($temp[$row]) and $row != ''){
-                        $number++;
-                        $data[] = [ 'link' => $row , 'tags' => json_encode($request->tags) ];
-                    }
-                }
-                    
-                Link::insert($data);
-
-                $this->apiSuccess();
-                return $this->apiOutput(Response::HTTP_OK, $number." Links added ...");
-                
+                $tag = $tagObj->id;
             }
+            $tag_values[] = (int)$tag;
+        }
+            
+        $request->tags = $tag_values;
+
+            
+        $link = Link::where('link',$request->link);
+        if($link->count() > 0){
+            $link->update(['tags' => $request->tags]);
+            $message = "Link updated ...";
+        }else{
+            Link::create($request->only('link','tags'));
+            $message = "New Link created ...";
+        }    
+            
+        if($request->file && $request->file != 'undefined'){
+            $validatedData = $request->validate([
+                'file' => 'required|max:2048',
+            ]);
+            $name = $request->file('file')->getClientOriginalName();
+            $path = $request->file('file')->store('public/files');
+            
+            
+            $fileName = auth()->id() . '_' . time() . '.'. $request->file->extension();  
+            // dd(public_path(''), $fileName);
+            $request->file->move(public_path(''), $fileName);
+            
+
+            
+
+            $number = 0;
+            $records = [];
+            $lines = file($fileName);
+            
+            foreach($lines as $line){
+                $link = trim(preg_replace('/\s\s+/', ' ', $line));
+                $records[] = $link;
+                // $result = Link::firstOrCreate(['link'=> $link, 'bulkin'=>true ]);
+                // if($result->wasRecentlyCreated)
+                //     $number++;
+            }
+            
+            $rows = $records;
+            $matched_result = Link::whereIn('link',$rows)->pluck('link')->toArray();
+            foreach($matched_result as $result)
+                $temp[$result] = 1;
+            
+            $data = [];
+            foreach($rows as $row){
+                
+                if(!isset($temp[$row]) and $row != ''){
+                    $number++;
+                    $data[] = [ 'link' => $row , 'tags' => json_encode($request->tags) ];
+                }
+            }
+                
+            Link::insert($data);
+
+            $this->apiSuccess();
+            return $this->apiOutput(Response::HTTP_OK, $number." Links added ...");
+            
+        }
             
 
             // $myfile = fopen("contents.list", "a") or die("Unable to open file!");
@@ -362,12 +366,10 @@ class LinkController extends Controller
             // fwrite($myfile, "\n". $txt);
             // fclose($myfile);
 
-            $this->apiSuccess();
-            return $this->apiOutput(Response::HTTP_OK, $message  ?? " Links added ...");  
-            // return $this->listLinks('New People added ...');
-        }else{
-            return $this->apiOutput(Response::HTTP_OK, "Minimum one field is required ...");
-        }
+        $this->apiSuccess();
+        return $this->apiOutput(Response::HTTP_OK, $message  ?? " Links added ...");  
+        // return $this->listLinks('New People added ...');
+        
         
     }
 

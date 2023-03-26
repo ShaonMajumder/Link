@@ -19,8 +19,9 @@ $(document).ready(function() {
           tags:$('#tag').val()
         },
         success:function(response){
+          toastr.warning(response.message);
           if(response.status == true) {
-            toastr.warning(response.message);
+            
             let data = response.data;
             let values = $("#tag").val();
             $.each(data,function(key,value){
@@ -30,7 +31,8 @@ $(document).ready(function() {
           }
         },
         error: function(response) {
-          toastr.error(response.message);
+          let data = response.responseJSON;
+          toastr.error(data.message);
         },
       });
   });
@@ -66,7 +68,8 @@ $(document).ready(function() {
         }
       },
       error: function(response) {
-        toastr.error(response.message);
+        let data = response.responseJSON;
+        toastr.error(data.message);
       },
     });
   });
@@ -176,19 +179,21 @@ $(document).ready( function() {
     // file:file,
 
     $.ajax({
-      url: "/links/insert",
+      url: "{{ route('links.store') }}",
       type:"POST",
       data: formData,
       processData: false,  // tell jQuery not to process the data
        contentType: false,  // tell jQuery not to set contentType
       success:function(response){
-        toastr.success(response.message);
-        // window.location.href = "{{ route('links.list','message=New links added ...') }}";
+        let data = response;
+        toastr.success(data.message);
+        // window.location.href = "{{ route('links.index','message=New links added ...') }}";
         // if(response.status)
         //   $('#form')[0].reset();
       },
       error: function(response) {
-        toastr.error(response.message);
+        let data = response.responseJSON;
+        toastr.error(data.message);
       },
     });
   });

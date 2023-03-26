@@ -40,7 +40,8 @@ $(document).ready(function() {
         }
       },
       error: function(response) {
-        toastr.error(response.message);
+        let data = response.responseJSON;
+        toastr.error(data.message);
       },
     });
   });
@@ -143,12 +144,13 @@ $(document).ready( function() {
        contentType: false,  // tell jQuery not to set contentType
       success:function(response){
         toastr.success(response.message);
-        // window.location.href = "{{ route('links.list','message=New links added ...') }}";
+        // window.location.href = "{{ route('links.index','message=New links added ...') }}";
         // if(response.status)
         //   $('#form')[0].reset();
       },
       error: function(response) {
-        toastr.error(response.message);
+        let data = response.responseJSON;
+        toastr.error(data.message);
       },
     });
   });

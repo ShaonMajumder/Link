@@ -37,7 +37,7 @@ $(document).ready(function() {
 
                 <div class="card-body">
                   <div class="container mt-5" style="overflow-x: auto;">
-                    <a href="{{ url("links/new") }}">Add New Link</a>
+                    <a href="{{ route('links.create') }}">Add New Link</a>
 
                     <table class="table table-striped">
                         <thead>

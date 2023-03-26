@@ -81,13 +81,14 @@ $(document).ready(function() {
                           <input type="text" class="form-control" id="tag_name" name="tag_name" placeholder="tag_name" value="{{ $tag->name }}">
                         </div>
 
+                        
                         <div class="form-group">
                           <label for="inputPropery">Child Tags</label>
                           {{-- <input type="text" class="form-control" id="inputPropery" aria-describedby="tagHelp" placeholder="Enter email"> --}}
                           <select style="width:100%;" id="tag" name="tag[]" multiple="">
                             <option></option>
                             @foreach ($tags as $item)
-                              @if( in_array($item->id, $tag->childTags->pluck('id')->toArray() ) )
+                              @if( in_array($item->id, $child_tags ) )
                                 <option value="{{ $item->id }}" selected>{{ $item->name }}</option>
                               @else
                                 <option value="{{ $item->id }}" >{{ $item->name }}</option>
@@ -144,12 +145,13 @@ $(document).ready( function() {
       },
       success:function(response){
         toastr.success(response.message);
-        // window.location.href = "{{ route('links.list','message=New links added ...') }}";
+        // window.location.href = "{{ route('links.index','message=New links added ...') }}";
         // if(response.status)
         //   $('#form')[0].reset();
       },
       error: function(response) {
-        toastr.error(response.message);
+        let data = response.responseJSON;
+        toastr.error(data.message);
       },
     });
   });

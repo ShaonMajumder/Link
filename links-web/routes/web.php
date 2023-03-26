@@ -25,11 +25,12 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::prefix('users')->group(function(){
     Route::get('{id}', [LinkController::class, 'showUser']);
 });
-Route::prefix('links')->group(function(){
-    Route::get('/', [LinkController::class, 'listIndex'])->name('links.list');
-    Route::get('update/{link}', [LinkController::class, 'linkEdit']);
-    Route::get('new', [PeopleController::class, 'create']);
-    Route::post('insert', [LinkController::class, 'insert']);
+Route::prefix('links')->name('links.')->group(function(){
+    Route::get('', [LinkController::class, 'listIndex'])->name('index');
+    Route::get('create', [PeopleController::class, 'create'])->name('create');
+    Route::post('store', [LinkController::class, 'store'])->name('store');
+    // Route::get('update/{link}', [LinkController::class, 'edit'])->name('edit');
+
     Route::get('tags/fix', [LinkController::class, 'tagFix']);
     Route::get('tags/count-total', [LinkController::class, 'tagCount']);
     Route::post('bulk-input', [LinkController::class, 'bulkInput']);
@@ -41,7 +42,7 @@ Route::prefix('links')->group(function(){
     
     
 
-    Route::prefix('tags')->group(function(){
+    Route::prefix('tags')->name('tags.')->group(function(){
         Route::get('/', [LinkController::class, 'tagsIndex']);    
         Route::get('/{tag}', [LinkController::class, 'tagEditPage']);
         Route::post('/{tag}/update', [LinkController::class, 'tagUpdate']);

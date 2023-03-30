@@ -1,94 +1,44 @@
 [
     {
-        "link": "https://stackoverflow.com/questions/15308723/escaping-spaces-in-a-select-result",
-        "tags": [
-            "education",
-            "stackoverflow",
-            "mysql",
-            "ict"
-        ],
-        "search_string": "ascending escaping whitespace mysql"
+        "link" : "https://stackoverflow.com/questions/15308723/escaping-spaces-in-a-select-result",
+        "tags" : ["education","stackoverflow","mysql","ict"],
+        "search_string" : "ascending escaping whitespace mysql"
     },
     {
-        "link": "https://www.w3schools.com/sql/func_mysql_trim.asp#:~:text=The%20TRIM()%20function%20removes%20leading%20and%20trailing%20spaces%20from%20a%20string.",
-        "tags": [
-            "education",
-            "stackoverflow",
-            "mysql",
-            "ict"
-        ],
-        "search_string": "how to remove preceding spaces in mysql"
+        "link" : "https://www.w3schools.com/sql/func_mysql_trim.asp#:~:text=The%20TRIM()%20function%20removes%20leading%20and%20trailing%20spaces%20from%20a%20string.",
+        "tags" : ["education","stackoverflow","mysql","ict"],
+        "search_string" : "how to remove preceding spaces in mysql"
     },
     {
-        "link": "https://stackoverflow.com/questions/1504962/how-to-remove-new-line-characters-from-data-rows-in-mysql",
-        "tags": [
-            "education",
-            "stackoverflow",
-            "mysql",
-            "ict"
-        ],
-        "search_string": "mysql remove newline"
+        "link" : "https://stackoverflow.com/questions/1504962/how-to-remove-new-line-characters-from-data-rows-in-mysql",
+        "tags" : ["education","stackoverflow","mysql","ict"],
+        "search_string" : "mysql remove newline"
     },
     {
-        "link": "https://www.itsolutionstuff.com/post/laravel-9-model-events-example-tutorialexample.html",
-        "tags": [
-            "education",
-            "stackoverflow",
-            "ict"
-        ],
-        "search_string": "model events laravel documentation"
+        "link" : "https://www.itsolutionstuff.com/post/laravel-9-model-events-example-tutorialexample.html",
+        "tags" : ["education","stackoverflow","ict"],
+        "search_string" : "model events laravel documentation"
     },
     {
-        "link": "https://stackoverflow.com/questions/28619194/take-an-action-after-any-model-is-created-updated-or-deleted-in-laravel",
-        "tags": [
-            "education",
-            "stackoverflow",
-            "ict"
-        ],
-        "search_string": "laravel model actions, listener on create or laravel laravel eloquent"
+        "link" : "https://stackoverflow.com/questions/28619194/take-an-action-after-any-model-is-created-updated-or-deleted-in-laravel",
+        "tags" : ["education","stackoverflow","ict"],
+        "search_string" : "laravel model actions, listener on create or laravel laravel eloquent"
     },
     {
-        "link": "https://www.youtube.com/watch?v=l9X3qXOkhvA",
-        "tags": [
-            "mountaineering",
-            "video"
-        ],
-        "search_string": ""
+        "link" : "https://www.youtube.com/watch?v=l9X3qXOkhvA",
+        "tags" : ["mountaineering","video"],
+        "search_string" : ""
     },
     {
-        "link": "https://www.youtube.com/watch?v=cihWMPNDRco",
-        "tags": [
-            "mountaineering",
-            "video"
-        ],
-        "search_string": ""
-    },
-    {
-<<<<<<< HEAD
-        "link": "https://javascript.plainenglish.io/how-to-add-to-an-array-in-react-state-3d08ddb2e1dc",
-        "tags": [
-            "hook",
-            "appending-to-array",
-            "react-js",
-            "video"
-        ],
-        "search_string": "append value to array hook variable in react"
-    },
-    {
-        "link": "https://stackoverflow.com/questions/31577588/laravel-5-1-php-domdocument-class-not-found",
-        "tags": [
-            "stackoverflow",
-            "ict"
-        ],
-        "search_string": "App\\Http\\Controllers\\DOMDocument not found"
+        "link" : "https://www.youtube.com/watch?v=cihWMPNDRco",
+        "tags" : ["mountaineering","video"],
+        "search_string" : ""
     },
     {
         "link" : "https://javascript.plainenglish.io/how-to-add-to-an-array-in-react-state-3d08ddb2e1dc",
         "tags" : ["hook","appending-to-array","react-js","video","stackoverflow"],
         "search_string" : "append value to array hook variable in react"
     },
-    
-    
     {
         "link" : "https://www.codegrepper.com/tpc/eloquent+closure+function+laravel",
         "tags" : ["stackoverflow","ict"],
@@ -100,9 +50,29 @@
         "search_string" : "$join->on And laravel"
     },
     {
-        "link" : "",
-        "tags" : [],
-        "search_string" : ""
+        "link" : "https://www.designcise.com/web/tutorial/how-to-use-the-php-array-filter-function-to-filter-by-keys#:~:text=Filtering%20a%20PHP%20array%20by%20keys&text=To%20use%20the%20PHP%20array_filter()%20function%20to%20filter%20array,to%20the%20provided%20callback%20function.",
+        "tags" : ["stackoverflow","cse"],
+        "search_string" : "how to filter keys in array in php"
+    },
+    {
+        "link" : "https://stackoverflow.com/questions/35597454/laravel-convert-json-array-to-array-and-only-get-one-object-from-the-array",
+        "tags" : ["stackoverflow","cse"],
+        "search_string" : "jsonresponse to array laravel"
+    },
+    {
+        "link" : "https://stackoverflow.com/questions/30764466/how-to-get-raw-exception-message-without-html-in-laravel",
+        "tags" : ["stackoverflow","cse"],
+        "search_string" : "larave get exception attributes"
+    },
+    {
+        "link" : "https://stackoverflow.com/questions/44730920/how-can-i-convert-json-to-a-laravel-eloquent-model",
+        "tags" : ["stackoverflow","cse"],
+        "search_string" : "json to object laravel"
+    },
+    {
+        "link" : "https://stackoverflow.com/questions/36201914/print-exception-message-in-laravel-abort-page",
+        "tags" : ["stackoverflow","cse"],
+        "search_string" : "print exception laravel"
     },
     {
         "link" : "",
@@ -205,42 +175,8 @@
         "search_string" : ""
     },
     {
-        "link": "https://stackoverflow.com/questions/62061642/how-to-check-if-axios-call-fails-due-to-no-internet-connection",
-        "tags": [
-            "ict",
-            "stackoverflow"
-        ],
-        "search_string": "check if network error in react"
-    },
-    {
-        "link": "https://stackoverflow.com/questions/23401365/laravel-at-least-one-field-required-validation",
-        "tags": [
-            "ict",
-            "stackoverflow"
-        ],
-        "search_string": "at least one field is required laravel validator"
-    },
-    {
-        "link": "https://www.youtube.com/watch?v=KDqGNkvhQGU",
-        "tags": [
-            "mountaineering",
-            "ict"
-        ],
-        "search_string": ""
-    },
-    {
-        "link": "https://8bityard.com/how-to-get-the-title-and-description-of-any-url-in-laravel/",
-        "tags": [],
-        "search_string": "get website title from url laravel php"
-    },
-    {
-        "link": "",
-        "tags": [],
-        "search_string": ""
-    },
-    {
-        "link": "",
-        "tags": [],
-        "search_string": ""
+        "link" : "",
+        "tags" : [],
+        "search_string" : ""
     }
 ]

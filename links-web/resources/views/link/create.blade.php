@@ -182,14 +182,11 @@ $(document).ready( function() {
       url: "{{ route('links.store') }}",
       type:"POST",
       data: formData,
-      processData: false,  // tell jQuery not to process the data
-       contentType: false,  // tell jQuery not to set contentType
+      processData: false,
+      contentType: false,
       success:function(response){
         let data = response;
         toastr.success(data.message);
-        // window.location.href = "{{ route('links.index','message=New links added ...') }}";
-        // if(response.status)
-        //   $('#form')[0].reset();
       },
       error: function(response) {
         let data = response.responseJSON;

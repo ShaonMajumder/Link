@@ -110,9 +110,29 @@ class LinkController extends Controller
         $columns=[];
         $query = "SHOW COLUMNS FROM links";
         $results = DB::select($query);
-        foreach($results as $result)
+        foreach($results as $result){
             array_push($columns,$result->Field);
-        $links = Link::latest()->paginate(10);
+        }
+            
+
+        $links = Link::leftJoin('tags', function ($join) {
+            $join->on(DB::raw('json_contains(links.tags, CONCAT(\'["\', tags.id, \'"]\'))'), '=', DB::raw('1'));
+        })
+        ->select('links.id',
+                'links.link',
+                'links.description',
+                'links.meta',
+                'links.title',
+                    DB::raw('GROUP_CONCAT(CONCAT(\'<a href="/links/tags/\', tags.id, \'">\',
+                          tags.name, \'</a>\') SEPARATOR ", ") as tag_names'),
+                'links.bulkin',
+                'links.created_at',
+                'links.updated_at',
+                'links.total_open_number',
+                )
+        ->whereNotNull('tags.id')
+        ->groupBy('links.id')
+        ->paginate(10);
         
         if($message){
             return view('link.list',compact('links','columns'))->with('message','New People added ...');
@@ -135,11 +155,8 @@ class LinkController extends Controller
         }else{
             $tagObj = Tag::where('name',$tag);
         }
-        
-        
+          
         if( $tagObj->count() > 0 ){
-            // link:$('#link').val(),
-            // tags:$('#tag').val()
             $parents = [];
             $current = $tagObj->first();
             if($current->parent_id){

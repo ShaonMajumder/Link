@@ -50,62 +50,6 @@ class LinkController extends Controller
         }
     }
 
-    public function tagFix(Request $request){
-        $links = Link::all();
-        foreach($links as $link){
-            echo gettype($link->tags) .'<br>';
-            
-            if(gettype($link->tags) == 'NULL'){
-                continue;
-            }
-
-            if(gettype($link->tags) == 'array'){
-                $arrs = $link->tags;
-            } else if(gettype($link->tags) == 'string'){
-                $arrs = explode(',',$link->tags);
-            }
-            $arrs2 = [];
-            
-            foreach($arrs as $arr){
-                if(is_numeric($arr)){
-                    $arr = (int)$arr;
-                }else{
-                    $tag_n = Tag::where('name','like', '%'.$arr.'%')->first()->id;
-                    if(!$tag_n){
-                        $tag_new = new Tag();
-                        $tag_new->name = $arr;
-                        $tag_new->causer_id = $request->user()->id;
-                        $tag_new->save();
-                        $tag_n = $tag_new->id;
-                    }
-                    $arr = $tag_n;
-                }
-                $arrs2[] = $arr;
-                
-            }
-            $link->tags = $arrs2;
-            // dd(json_decode($link->tags));
-        
-        }
-
-        DB::transaction(function () use ($links) {
-            $links->each(function ($item) {
-                $item->save();
-            });
-        });
-
-        $tags = Tag::all();
-        foreach($tags as $tag){
-            $tag->name = str_replace('_', '-', $tag->name);
-        }
-
-        DB::transaction(function () use ($tags) {
-            $tags->each(function ($item) {
-                $item->save();
-            });
-        });
-    }
-
     public function listIndex($message=null){
         $columns=[];
         $query = "SHOW COLUMNS FROM links";
@@ -420,32 +364,25 @@ class LinkController extends Controller
 
     public function randomChoose(Request $request,$file="input.list"){
         $tags = explode(',',$request->tags);
-        
-        // SELECT * from `links` WHERE JSON_CONTAINS(tags, '"2"','$')
         $link = Link::where(function($query) use($tags){
-     
-            $query->whereJsonContains('tags', intval($tags[0]) );
-    
-            for($i = 1; $i < count($tags); $i++) {
-               $query->WhereJsonContains('tags', intval($tags[$i]) );      
+            $qpiece = [];
+            foreach( $tags as $tag) {
+                $qpiece[] = "JSON_CONTAINS(tags, '$tag')";
             }
-    
-            return $query;
+            $qpiece_string = implode(" AND ",$qpiece);
+            return $query->WhereRaw($qpiece_string);
         })->get();
+
         if($link->count()){
-            $link = $link->random();
-            $link = $link->link;
             $this->apiSuccess();
-            $this->data = $link;
+            $this->data = [
+                "goto" => $link->random()->link,
+                "count" => $link->count()
+            ];
             return $this->apiOutput(Response::HTTP_OK, "Random Link picked ...");
         }else{
             return $this->apiOutput(Response::HTTP_NOT_FOUND, "No Link picked ...");
         }
-      
-        // $link = Link::where('bulkin',true)->get()->random();
-        
-
-        
     }
 
     public function addInfo(Request $request){

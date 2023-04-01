@@ -128,6 +128,8 @@ $(document).ready(function() {
                       
                       <button type="submit" class="btn btn-primary">Search</button>
                   </form>
+
+                  <div class="alert alert-primary" role="alert" style="display: none;"></div>
                 </div>
             </div>
         </div>
@@ -135,6 +137,7 @@ $(document).ready(function() {
 </div>
 <script type="text/javascript">
 $(document).ready( function() {
+  
   toastr.options =
   {
   	"closeButton" : true,
@@ -167,19 +170,23 @@ $(document).ready( function() {
     // file:file,
 
     $.ajax({
-      url: "/links/pick/random",
+      url: "{{ route('links.show-random') }}",
       type:"POST",
       data: formData,
       processData: false,  // tell jQuery not to process the data
        contentType: false,  // tell jQuery not to set contentType
       success:function(response){
         toastr.success(response.message);
-        window.open(response.data, "_blank");
+        $('.alert-primary').html(response.data.count + ' links found !');
+        $('.alert-primary').show();
+        
+        window.open(response.data.goto, "_blank");
         // window.location.href = "{{ route('links.index','message=New links added ...') }}";
         // if(response.status)
         //   $('#form')[0].reset();
       },
       error: function(response) {
+        $('.alert-primary').hide();
         let data = response.responseJSON;
         toastr.error(data.message);
       },

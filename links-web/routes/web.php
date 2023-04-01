@@ -21,25 +21,23 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::prefix('users')->group(function(){
-    Route::get('{id}', [LinkController::class, 'showUser']);
-});
 Route::prefix('links')->name('links.')->group(function(){
     Route::get('', [LinkController::class, 'listIndex'])->name('index');
     Route::get('create', [PeopleController::class, 'create'])->name('create');
     Route::post('store', [LinkController::class, 'store'])->name('store');
+    Route::get('show/random', [LinkController::class, 'randomPage']);
+    Route::post('pick/random', [LinkController::class, 'randomChoose'])->name('show-random');
     // Route::get('update/{link}', [LinkController::class, 'edit'])->name('edit');
+    Route::get('tags/count-total', [LinkController::class, 'tagCount']); // make it efficient 
 
-    Route::get('tags/fix', [LinkController::class, 'tagFix']);
-    Route::get('tags/count-total', [LinkController::class, 'tagCount']);
+    // checked till now
+
     Route::post('bulk-input', [LinkController::class, 'bulkInput']);
     Route::post('check-unique', [LinkController::class, 'checkUniqueLink']);
     
     Route::get('listtags', [LinkController::class, 'listTags']);
-    Route::get('show/random', [LinkController::class, 'randomPage']);
-    Route::post('pick/random', [LinkController::class, 'randomChoose']);
     
+
     
 
     Route::prefix('tags')->name('tags.')->group(function(){
@@ -50,4 +48,9 @@ Route::prefix('links')->name('links.')->group(function(){
     });
     
 
+});
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::prefix('users')->group(function(){
+    Route::get('{id}', [LinkController::class, 'showUser']);
 });

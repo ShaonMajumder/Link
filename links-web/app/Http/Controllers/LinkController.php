@@ -164,7 +164,7 @@ class LinkController extends Controller
 
     public function tagsIndex(){
         $tags = Tag::all();
-        $tags = $tags = Tag::leftJoin('links', function ($join) {
+        $tags = Tag::leftJoin('links', function ($join) {
             $join->on(DB::raw('JSON_CONTAINS(links.tags, CAST(tags.id as JSON))'), '=', DB::raw('1'));
         })
         ->select('tags.*', DB::raw('COUNT(links.id) as links_count'))

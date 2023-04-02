@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -77,8 +78,6 @@ class LinkController extends Controller
                 )
         ->groupBy('links.id')
         ->paginate(10);
-    
-        // dd($links);
         
         if($message){
             return view('link.list',compact('links','columns'))->with('message','New People added ...');
@@ -376,24 +375,16 @@ class LinkController extends Controller
     public function randomChoose(Request $request,$file="input.list"){
         $tags = explode(',',$request->tags);
 
-        // on initial hit of application run
-        if((!Session::has('random_links')) or (!Session::has('random_keys'))){
-            Session::put('random_links',[]);
-            Session::put('random_keys',$tags);
-        }
-
+        $array_not_initialized = (!Session::has('random_links')) or (!Session::has('random_keys'));
         $random_keys = Session::get('random_keys');
+        $array_visited_all_links =  !$this->array_equal($random_keys, $tags);
 
-        if( ! $this->array_equal($random_keys, $tags) ){
+        // on initial hit of application run
+        if($array_not_initialized or $array_visited_all_links){
             Session::put('random_links',[]);
             Session::put('random_keys',$tags);
         }
 
-        
-
-        
-        
-        
         $link = Link::where(function($query) use($tags){
             $qpiece = [];
             foreach( $tags as $tag) {
@@ -403,19 +394,15 @@ class LinkController extends Controller
             return $query->WhereRaw($qpiece_string);
         })->get();
 
-        
-
         if($link->count()){
             $previous_random_links = Session::get('random_links');
             if( count($previous_random_links) == $link->count() ){
                 $previous_random_links = [end($previous_random_links)];
             }
-
             while( in_array($random_link = $link->random()->link, $previous_random_links) ){}
             array_push($previous_random_links, $random_link);
             Session::put('random_links',$previous_random_links);
             Session::put('random_keys',$tags);
-
             
             $this->apiSuccess();
             $this->data = [

@@ -59,9 +59,9 @@ class LinkController extends Controller
             array_push($columns,$result->Field);
         }
             
-
+    
         $links = Link::leftJoin('tags', function ($join) {
-            $join->on(DB::raw('json_contains(links.tags, CONCAT(\'["\', tags.id, \'"]\'))'), '=', DB::raw('1'));
+            $join->on(DB::raw("JSON_CONTAINS(links.tags, CONCAT('[', tags.id, ']'))"), '=', DB::raw('1'));
         })
         ->select('links.id',
                 'links.link',
@@ -75,9 +75,10 @@ class LinkController extends Controller
                 'links.updated_at',
                 'links.total_open_number',
                 )
-        ->whereNotNull('tags.id')
         ->groupBy('links.id')
         ->paginate(10);
+    
+        // dd($links);
         
         if($message){
             return view('link.list',compact('links','columns'))->with('message','New People added ...');

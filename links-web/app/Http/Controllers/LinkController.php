@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class LinkController extends Controller
@@ -362,8 +363,36 @@ class LinkController extends Controller
         return view('link.random');
     }
 
+    public function array_equal($a, $b) {
+        return (
+             is_array($a) 
+             && is_array($b) 
+             && count($a) == count($b) 
+             && array_diff($a, $b) === array_diff($b, $a)
+        );
+    }
+
     public function randomChoose(Request $request,$file="input.list"){
         $tags = explode(',',$request->tags);
+
+        // on initial hit of application run
+        if((!Session::has('random_links')) or (!Session::has('random_keys'))){
+            Session::put('random_links',[]);
+            Session::put('random_keys',$tags);
+        }
+
+        $random_keys = Session::get('random_keys');
+
+        if( ! $this->array_equal($random_keys, $tags) ){
+            Session::put('random_links',[]);
+            Session::put('random_keys',$tags);
+        }
+
+        
+
+        
+        
+        
         $link = Link::where(function($query) use($tags){
             $qpiece = [];
             foreach( $tags as $tag) {
@@ -373,10 +402,23 @@ class LinkController extends Controller
             return $query->WhereRaw($qpiece_string);
         })->get();
 
+        
+
         if($link->count()){
+            $previous_random_links = Session::get('random_links');
+            if( count($previous_random_links) == $link->count() ){
+                $previous_random_links = [end($previous_random_links)];
+            }
+
+            while( in_array($random_link = $link->random()->link, $previous_random_links) ){}
+            array_push($previous_random_links, $random_link);
+            Session::put('random_links',$previous_random_links);
+            Session::put('random_keys',$tags);
+
+            
             $this->apiSuccess();
             $this->data = [
-                "goto" => $link->random()->link,
+                "goto" => $random_link,
                 "count" => $link->count()
             ];
             return $this->apiOutput(Response::HTTP_OK, "Random Link picked ...");

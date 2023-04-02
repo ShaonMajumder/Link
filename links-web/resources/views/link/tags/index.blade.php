@@ -77,7 +77,7 @@ $(document).ready(function() {
                 <td><a href="tags/{{ $tag->id }}"><i class="fa-solid fa-plus"></i></a>
                   
                     <button type="button" class="btn btn-primary">
-                      {{ $tag->name }} <span class="badge badge-light">{{ $tag->link_count }}</span>
+                      {{ $tag->name }} <span class="badge badge-light">{{ $tag->links_count }}</span>
                     </button>
 
                   </td>

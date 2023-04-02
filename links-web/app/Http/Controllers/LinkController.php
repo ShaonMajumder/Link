@@ -128,6 +128,7 @@ class LinkController extends Controller
     }
 
     public function tagUpdate(Tag $tag,Request $request){
+        // fix adding child tags
         if($request->tags){
             foreach ($request->tags as $key) { 
                 if (!(is_numeric($key))) {
